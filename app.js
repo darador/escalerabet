@@ -215,8 +215,11 @@ function detectUser() {
         currentUser = hash;
         // Update Title in Header
         const userTitle = currentUser.charAt(0).toUpperCase() + currentUser.slice(1);
-        document.querySelector('.header-logo h1').textContent = `El elefante se come en fetas - Dale ${userTitle}`;
-        document.title = `El elefante se come en fetas - Dale ${userTitle}`;
+        const titleEl = document.getElementById('app-title');
+        if (titleEl) {
+            titleEl.textContent = `Dale ${userTitle}`;
+        }
+        document.title = `Dale ${userTitle} - Reto Escalera`;
         
         // Hide user selector overlay if open
         const overlay = document.getElementById('user-selector-overlay');
@@ -301,6 +304,16 @@ const elements = {
     statRoi: document.getElementById('stat-roi'),
     badgeProgress: document.getElementById('badge-progress'),
     progressBarFill: document.getElementById('progress-bar-fill'),
+    
+    // New Header/Stats Elements
+    badgeProgressHeader: document.getElementById('badge-progress-header'),
+    statStepsCount: document.getElementById('stat-steps-count'),
+    
+    // Collapsible Selectors
+    btnToggleConfig: document.getElementById('btn-toggle-config'),
+    configCollapsibleContent: document.getElementById('config-collapsible-content'),
+    btnToggleHowItWorks: document.getElementById('btn-toggle-how-it-works'),
+    howItWorksContent: document.getElementById('how-it-works-content'),
     
     // Filter buttons
     btnFilterActive: document.getElementById('btn-filter-active'),
@@ -531,6 +544,12 @@ function calculateLadder() {
     // Progress
     const totalSteps = state.steps.length;
     elements.badgeProgress.textContent = `Pasos Ganados: ${wonStepsCount} / ${totalSteps}`;
+    if (elements.badgeProgressHeader) {
+        elements.badgeProgressHeader.textContent = `${wonStepsCount} / ${totalSteps} pasos completados`;
+    }
+    if (elements.statStepsCount) {
+        elements.statStepsCount.textContent = `${wonStepsCount}/${totalSteps}`;
+    }
     const progressPercent = totalSteps > 0 ? (wonStepsCount / totalSteps) * 100 : 0;
     elements.progressBarFill.style.width = `${progressPercent}%`;
 }
@@ -914,6 +933,21 @@ elements.btnReset.addEventListener('click', () => {
         updateAll();
     }
 });
+
+// Collapsible Config & Info Accordion Listeners
+if (elements.btnToggleConfig && elements.configCollapsibleContent) {
+    elements.btnToggleConfig.addEventListener('click', () => {
+        elements.configCollapsibleContent.classList.toggle('open');
+        elements.btnToggleConfig.classList.toggle('open');
+    });
+}
+
+if (elements.btnToggleHowItWorks && elements.howItWorksContent) {
+    elements.btnToggleHowItWorks.addEventListener('click', () => {
+        elements.howItWorksContent.classList.toggle('open');
+        elements.btnToggleHowItWorks.classList.toggle('open');
+    });
+}
 
 // Modal Events
 elements.closeModal.addEventListener('click', closeCountrySelectorModal);

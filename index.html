@@ -18,80 +18,72 @@
         <!-- Header Section -->
         <header class="main-header">
             <div class="header-logo">
-                <span class="logo-emoji">🪜</span>
-                <h1>El elefante se come en fetas</h1>
+                <span class="logo-emoji">🐘</span>
+                <div class="header-title-wrapper">
+                    <h1 id="app-title">El elefante se come en fetas</h1>
+                    <span id="badge-progress-header" class="progress-text-header">0 / 104 pasos completados</span>
+                </div>
             </div>
             <div class="header-actions">
-                <button id="btn-reset" class="btn btn-danger" title="Reiniciar todo el reto">
-                    <i data-lucide="rotate-ccw"></i> Reiniciar Reto
+                <button id="btn-reset" class="btn btn-reset-compact" title="Reiniciar todo el reto">
+                    <i data-lucide="rotate-ccw"></i> <span class="desktop-only">Reiniciar</span>
                 </button>
             </div>
         </header>
 
-        <!-- Stats Grid -->
-        <section class="stats-grid" aria-label="Estadísticas de tu reto">
-            <div class="stat-card">
-                <div class="stat-icon icon-initial"><i data-lucide="wallet"></i></div>
-                <div class="stat-info">
-                    <span class="stat-label">Inversión Inicial</span>
-                    <span id="stat-initial" class="stat-value">$10.000,00</span>
-                </div>
+        <!-- Unified Stats Panel -->
+        <section class="stats-container">
+            <div class="main-stats-card">
+                <span class="main-stat-label">Capital Actual</span>
+                <span id="stat-current" class="main-stat-value">$10.000,00</span>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon icon-current"><i data-lucide="trending-up"></i></div>
-                <div class="stat-info">
-                    <span class="stat-label">Monto Actual</span>
-                    <span id="stat-current" class="stat-value">$10.000,00</span>
-                </div>
+            <div class="stats-chips-row">
+                <div class="stat-chip"><i data-lucide="wallet"></i> Inicial: <strong id="stat-initial">$10.000,00</strong></div>
+                <div class="stat-chip"><i data-lucide="coins"></i> Ganancia: <strong id="stat-profit">$0,00</strong></div>
+                <div class="stat-chip"><i data-lucide="percent"></i> ROI: <strong id="stat-roi">0%</strong></div>
+                <div class="stat-chip"><i data-lucide="check-circle-2"></i> Pasos: <strong id="stat-steps-count">0/104</strong></div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon icon-profit"><i data-lucide="coins"></i></div>
-                <div class="stat-info">
-                    <span class="stat-label">Ganancia Neta</span>
-                    <span id="stat-profit" class="stat-value">$0,00</span>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon icon-roi"><i data-lucide="percent"></i></div>
-                <div class="stat-info">
-                    <span class="stat-label">Retorno (ROI)</span>
-                    <span id="stat-roi" class="stat-value">0%</span>
-                </div>
         </section>
 
         <!-- Main Workspace -->
         <main class="main-content single-column">
-            <!-- Top Configuration Bar -->
+            <!-- Collapsible Form / Config Panel -->
             <section class="config-bar-container">
-                <div class="config-bar-card">
-                    <div class="config-field">
-                        <label for="input-initial-balance">Monto Inicial ($)</label>
-                        <div class="input-with-icon">
-                            <span class="input-prefix">$</span>
-                            <input type="number" id="input-initial-balance" min="1" step="any" value="10000" placeholder="10000">
+                <button id="btn-toggle-config" class="config-toggle-header">
+                    <span class="toggle-title"><i data-lucide="sliders"></i> Configuración y Nuevo Paso</span>
+                    <i data-lucide="chevron-down" class="toggle-icon"></i>
+                </button>
+                <div id="config-collapsible-content" class="config-collapsible-content">
+                    <div class="config-bar-card">
+                        <div class="config-field">
+                            <label for="input-initial-balance">Monto Inicial ($)</label>
+                            <div class="input-with-icon">
+                                <span class="input-prefix">$</span>
+                                <input type="number" id="input-initial-balance" min="1" step="any" value="10000" placeholder="10000">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="config-field">
-                        <label for="input-default-odds">Cuota por Defecto</label>
-                        <div class="input-with-icon">
-                            <span class="input-prefix">x</span>
-                            <input type="number" id="input-default-odds" min="1.01" step="0.01" value="1.10" placeholder="1.10">
+                        <div class="config-field">
+                            <label for="input-default-odds">Cuota por Defecto</label>
+                            <div class="input-with-icon">
+                                <span class="input-prefix">x</span>
+                                <input type="number" id="input-default-odds" min="1.01" step="0.01" value="1.10" placeholder="1.10">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="config-field config-search-field" style="position: relative;">
-                        <label for="wc-match-search">Buscar y Agregar Partido Oficial</label>
-                        <input type="text" id="wc-match-search" class="input-block" placeholder="🔍 Buscar partido (ej. Argentina)..." style="width: 100%; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-primary); padding: 0.75rem 1rem; font-family: inherit; font-size: 0.9rem; border-style: solid; transition: all var(--transition-fast);">
-                        <div id="wc-search-results" class="wc-search-results" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #121420; border: 1px solid var(--border-color); border-radius: var(--radius-sm); max-height: 200px; overflow-y: auto; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
-                            <!-- Results populated via JS -->
+                        <div class="config-field config-search-field" style="position: relative;">
+                            <label for="wc-match-search">Buscar y Agregar Partido Oficial</label>
+                            <input type="text" id="wc-match-search" class="input-block" placeholder="🔍 Buscar partido (ej. Argentina)..." style="width: 100%; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-primary); padding: 0.75rem 1rem; font-family: inherit; font-size: 0.9rem; border-style: solid; transition: all var(--transition-fast);">
+                            <div id="wc-search-results" class="wc-search-results" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #121420; border: 1px solid var(--border-color); border-radius: var(--radius-sm); max-height: 200px; overflow-y: auto; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+                                <!-- Results populated via JS -->
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="config-buttons">
-                        <button id="btn-add-step" class="btn btn-primary" style="height: 100%; min-height: 46px; align-self: flex-end;">
-                            <i data-lucide="plus-circle"></i> Agregar Paso
-                        </button>
+                        <div class="config-buttons">
+                            <button id="btn-add-step" class="btn btn-primary" style="height: 100%; min-height: 46px; align-self: flex-end;">
+                                <i data-lucide="plus-circle"></i> Agregar Paso
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -137,14 +129,19 @@
             </section>
         </main>
         
-        <!-- How it works footer section -->
-        <section class="how-it-works-footer" aria-label="Instrucciones de uso">
-            <h3>🪜 ¿Cómo funciona el Reto Escalera?</h3>
-            <p>El reto escalera consiste en reinvertir la totalidad del monto conseguido de una apuesta ganada en el siguiente partido seleccionado. Así se logra un crecimiento compuesto del capital inicial.</p>
-            <div class="instruction-steps">
-                <div class="instruction-step"><span>1</span> Configura tu <strong>monto inicial</strong> y tus <strong>cuotas objetivo</strong>.</div>
-                <div class="instruction-step"><span>2</span> Registra las <strong>cuotas reales</strong> de tus apuestas según la cuota final del mercado.</div>
-                <div class="instruction-step"><span>3</span> Cambia el estado a <strong>Ganado</strong> para habilitar y calcular automáticamente el paso siguiente. Si pierdes un paso, la cadena real se interrumpe, pero mantienes tu planificación teórica para comparar.</div>
+        <!-- How it works accordion section -->
+        <section class="how-it-works-accordion">
+            <button id="btn-toggle-how-it-works" class="accordion-header">
+                <span>🪜 ¿Cómo funciona el Reto Escalera?</span>
+                <i data-lucide="chevron-right" class="accordion-icon"></i>
+            </button>
+            <div id="how-it-works-content" class="accordion-content">
+                <p style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.9rem;">El reto escalera consiste en reinvertir la totalidad del monto conseguido de una apuesta ganada en el siguiente partido seleccionado. Así se logra un crecimiento compuesto del capital inicial.</p>
+                <div class="instruction-steps">
+                    <div class="instruction-step"><span>1</span> Configura tu <strong>monto inicial</strong> y tus <strong>cuotas objetivo</strong>.</div>
+                    <div class="instruction-step"><span>2</span> Registra las <strong>cuotas reales</strong> de tus apuestas según la cuota final del mercado.</div>
+                    <div class="instruction-step"><span>3</span> Cambia el estado a <strong>Ganado</strong> para habilitar y calcular automáticamente el paso siguiente. Si pierdes un paso, la cadena real se interrumpe, pero mantienes tu planificación teórica para comparar.</div>
+                </div>
             </div>
         </section>
         
