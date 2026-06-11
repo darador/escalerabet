@@ -205,7 +205,7 @@ const WC_FULL_STEPS = WC_104_MATCHES.map((matchStr) => ({
 }));
 
 // Multi-User Routing Config
-const VALID_USERS = ["dario", "julieta", "fausto", "cuervo"];
+const VALID_USERS = ["dario", "julieta", "fausto", "cuervo", "joaquin"];
 let currentUser = "";
 
 // Parse user path
@@ -215,8 +215,8 @@ function detectUser() {
         currentUser = path;
         // Update Title in Header
         const userTitle = currentUser.charAt(0).toUpperCase() + currentUser.slice(1);
-        document.querySelector('.header-logo h1').textContent = `Reto Escalera - ${userTitle}`;
-        document.title = `Reto Escalera - ${userTitle}`;
+        document.querySelector('.header-logo h1').textContent = `El elefante se come en fetas - Dale ${userTitle}`;
+        document.title = `El elefante se come en fetas - Dale ${userTitle}`;
     } else {
         // Show user selection overlay
         showUserSelectionOverlay();
@@ -237,7 +237,7 @@ function showUserSelectionOverlay() {
     `;
     
     div.innerHTML = `
-        <h1 style="font-size: 2.2rem; font-weight:800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🪜 Reto Escalera</h1>
+        <h1 style="font-size: 2.2rem; font-weight:800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🪜 El elefante se come en fetas</h1>
         <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size:1.1rem;">Selecciona tu usuario para acceder a tu planilla:</p>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; width: 100%; max-width: 440px;">
             ${VALID_USERS.map(u => `
