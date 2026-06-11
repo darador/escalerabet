@@ -285,6 +285,9 @@ let activeRowIdForCountrySelect = null;
 let selectedLocalTeam = null;
 let selectedVisitorTeam = null;
 
+// Filter State
+let currentFilter = 'active'; // 'active' or 'all'
+
 // DOM Elements
 const elements = {
     inputInitialBalance: document.getElementById('input-initial-balance'),
@@ -298,6 +301,10 @@ const elements = {
     statRoi: document.getElementById('stat-roi'),
     badgeProgress: document.getElementById('badge-progress'),
     progressBarFill: document.getElementById('progress-bar-fill'),
+    
+    // Filter buttons
+    btnFilterActive: document.getElementById('btn-filter-active'),
+    btnFilterAll: document.getElementById('btn-filter-all'),
     
     // Search bar for 104 matches
     wcMatchSearch: document.getElementById('wc-match-search'),
@@ -533,7 +540,22 @@ function renderTable() {
     elements.tbody.innerHTML = '';
     let chainBroken = false;
 
+    // Find the first index that is NOT won (pending or lost)
+    let currentActiveIdx = state.steps.findIndex(s => s.status !== 'won');
+    if (currentActiveIdx === -1) {
+        currentActiveIdx = state.steps.length - 1;
+    }
+
     state.steps.forEach((step, index) => {
+        // Filter logic: show last resolved, current active, and next 3
+        if (currentFilter === 'active') {
+            const startShow = Math.max(0, currentActiveIdx - 1);
+            const endShow = currentActiveIdx + 3;
+            if (index < startShow || index > endShow) {
+                return;
+            }
+        }
+
         const tr = document.createElement('tr');
         
         if (step.status === 'won') {
@@ -842,6 +864,22 @@ function updateAll() {
 }
 
 // Event Listeners for controls
+if (elements.btnFilterActive && elements.btnFilterAll) {
+    elements.btnFilterActive.addEventListener('click', () => {
+        currentFilter = 'active';
+        elements.btnFilterActive.classList.add('active');
+        elements.btnFilterAll.classList.remove('active');
+        renderTable();
+    });
+    
+    elements.btnFilterAll.addEventListener('click', () => {
+        currentFilter = 'all';
+        elements.btnFilterActive.classList.remove('active');
+        elements.btnFilterAll.classList.add('active');
+        renderTable();
+    });
+}
+
 elements.inputInitialBalance.addEventListener('change', (e) => {
     let val = parseFloat(e.target.value);
     if (isNaN(val) || val < 1) val = 10000;
