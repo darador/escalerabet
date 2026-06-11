@@ -829,7 +829,7 @@ body {
 
 /* Status Button / Dropdown Toggle */
 .status-pill {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
@@ -837,12 +837,13 @@ body {
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    padding: 0.4rem 0.75rem;
+    padding: 0.45rem 0.85rem;
     border-radius: 50px;
     cursor: pointer;
     border: 1px solid transparent;
     transition: all var(--transition-fast);
     width: fit-content;
+    white-space: nowrap;
 }
 
 .status-pill select {
@@ -855,9 +856,11 @@ body {
     text-transform: inherit;
     cursor: pointer;
     outline: none;
-    padding-right: 0.5rem;
+    padding-right: 0.8rem;
     appearance: none;
     -webkit-appearance: none;
+    white-space: nowrap;
+    overflow: visible;
 }
 
 .status-pill select option {
@@ -1013,13 +1016,28 @@ tr.row-lost .td-input-odds {
     }
     
     .stats-container {
-        padding: 1rem;
+        padding: 0.85rem;
         border-radius: var(--radius-md);
-        gap: 0.75rem;
+        gap: 0.65rem;
+    }
+
+    .stats-main-row {
+        gap: 0.5rem;
+        padding-bottom: 0.6rem;
     }
     
     .main-stat-value {
-        font-size: 1.95rem;
+        font-size: 1.45rem !important;
+    }
+
+    .vs-trophy {
+        width: 30px;
+        height: 30px;
+    }
+
+    .vs-trophy svg {
+        width: 15px;
+        height: 15px;
     }
     
     .stat-chip {
@@ -1271,11 +1289,16 @@ tr.row-lost .td-input-odds {
     .status-pill {
         width: 100% !important;
         justify-content: space-between !important;
-        padding: 0.45rem 1rem !important;
+        padding: 0.5rem 1.25rem !important;
+        min-width: 145px !important;
+        white-space: nowrap !important;
     }
     
     .status-pill select {
         width: 100% !important;
+        padding-right: 1.5rem !important;
+        white-space: nowrap !important;
+        overflow: visible !important;
     }
 
     /* Hide Action and Object planning columns */
