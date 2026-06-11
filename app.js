@@ -1,6 +1,6 @@
 // Supabase Configuration (Optional: Fill these to enable database sync across devices)
-const SUPABASE_URL = ""; 
-const SUPABASE_ANON_KEY = ""; 
+const SUPABASE_URL = "https://qrnjkhvcifeqewihqcta.supabase.co"; 
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFybmpraHZjaWZlcWV3aWhxY3RhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExOTI3MzAsImV4cCI6MjA5Njc2ODczMH0.EYhoHxVfMm8hcVDbmoD_ogFuYiUCfYYWvXBJMGYO0Tc"; 
 
 // World Cup 2026 ISO Codes Mapping
 const COUNTRY_CODES = {
