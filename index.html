@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reto Escalera - Mi Registro de Apuestas</title>
+    <meta name="description" content="Gestiona y registra el progreso de tu reto escalera de apuestas deportivas. Controla montos, cuotas y ganancias en tiempo real.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Iconos Lucide (via ESM o FontAwesome alternativo - usaremos SVG embed para control total o Lucide Icons CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="main-header">
+            <div class="header-logo">
+                <span class="logo-emoji">🪜</span>
+                <h1>Reto Escalera</h1>
+            </div>
+            <div class="header-actions">
+                <button id="btn-reset" class="btn btn-danger" title="Reiniciar todo el reto">
+                    <i data-lucide="rotate-ccw"></i> Reiniciar Reto
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <section class="stats-grid" aria-label="Estadísticas de tu reto">
+            <div class="stat-card">
+                <div class="stat-icon icon-initial"><i data-lucide="wallet"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Inversión Inicial</span>
+                    <span id="stat-initial" class="stat-value">$10.000,00</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-current"><i data-lucide="trending-up"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Monto Actual</span>
+                    <span id="stat-current" class="stat-value">$10.000,00</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-profit"><i data-lucide="coins"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Ganancia Neta</span>
+                    <span id="stat-profit" class="stat-value">$0,00</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-roi"><i data-lucide="percent"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">Retorno (ROI)</span>
+                    <span id="stat-roi" class="stat-value">0%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Sidebar Controls -->
+            <aside class="sidebar-controls">
+                <div class="control-card">
+                    <h2>Configuración</h2>
+                    
+                    <div class="form-group">
+                        <label for="input-initial-balance">Monto Inicial ($)</label>
+                        <div class="input-with-icon">
+                            <span class="input-prefix">$</span>
+                            <input type="number" id="input-initial-balance" min="1" step="any" value="10000" placeholder="10000">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-default-odds">Cuota por Defecto</label>
+                        <div class="input-with-icon">
+                            <span class="input-prefix">x</span>
+                            <input type="number" id="input-default-odds" min="1.01" step="0.01" value="1.10" placeholder="1.10">
+                        </div>
+                    </div>
+
+                    <button id="btn-add-step" class="btn btn-primary btn-block">
+                        <i data-lucide="plus-circle"></i> Agregar Paso
+                    </button>
+                </div>
+
+                <div class="control-card worldcup-card">
+                    <h3>🏆 Mundial 2026</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                        Pre-carga los partidos oficiales o busca uno para agregarlo a tu reto.
+                    </p>
+                    
+                    <div class="form-group" style="position: relative; margin-bottom: 1rem;">
+                        <label for="wc-match-search">Agregar Partido Oficial</label>
+                        <input type="text" id="wc-match-search" class="input-block" placeholder="🔍 Buscar partido (ej. Argentina)..." style="width: 100%; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-primary); padding: 0.75rem 1rem; font-family: inherit; font-size: 0.9rem; border-style: solid; transition: all var(--transition-fast);">
+                        <div id="wc-search-results" class="wc-search-results" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #121420; border: 1px solid var(--border-color); border-radius: var(--radius-sm); max-height: 200px; overflow-y: auto; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+                            <!-- Results populated via JS -->
+                        </div>
+                    </div>
+
+                    <button id="btn-load-wc" class="btn btn-primary btn-block" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);">
+                        <i data-lucide="trophy"></i> Cargar los 104 Partidos
+                    </button>
+                </div>
+
+                <div class="control-card info-card">
+                    <h3>¿Cómo funciona?</h3>
+                    <p>El reto escalera consiste en reinvertir el total ganado en cada paso para el siguiente partido.</p>
+                    <ul>
+                        <li>Define tu <strong>monto inicial</strong>.</li>
+                        <li>Configura la cuota de cada partido.</li>
+                        <li>Marca como <strong>Ganado</strong> para habilitar el siguiente paso.</li>
+                        <li>Si pierdes un paso, la cadena se detendrá en ese punto.</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Table/List of steps -->
+            <section class="ladder-container">
+                <div class="section-header">
+                    <h2>Mis Pasos Escalera</h2>
+                    <span id="badge-progress" class="badge">Paso 0 / 10</span>
+                </div>
+
+                <!-- Progress Visual Bar -->
+                <div class="progress-bar-container">
+                    <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
+                </div>
+
+                <!-- Steps Table / Responsive Cards -->
+                <div class="steps-wrapper">
+                    <table class="steps-table" id="steps-table">
+                        <thead>
+                            <tr>
+                                <th class="col-step">Paso</th>
+                                <th class="col-match">Partido / Detalle</th>
+                                <th class="col-odds-obj">Cuota Obj.</th>
+                                <th class="col-odds-real">Cuota Real</th>
+                                <th class="col-stake-obj">Apuesta Obj.</th>
+                                <th class="col-return-obj">Retorno Obj.</th>
+                                <th class="col-stake-real">Apuesta Real</th>
+                                <th class="col-return-real">Retorno Real</th>
+                                <th class="col-status">Estado</th>
+                                <th class="col-action">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="steps-tbody">
+                            <!-- JS will dynamically populate here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="app-footer">
+            <p>Reto Escalera &copy; 2026. Diseñado para control y diversión responsable.</p>
+        </footer>
+    </div>
+
+    <!-- Country Selector Modal -->
+    <div id="country-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🏆 Seleccionar Equipos (Mundial 2026)</h3>
+                <span id="close-modal" class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                    Selecciona el equipo local y el equipo visitante para armar el partido.
+                </p>
+                <div class="selection-display">
+                    <div id="selected-team-1" class="selected-team-box" data-placeholder="Local">Selecciona Local</div>
+                    <div class="vs-divider">VS</div>
+                    <div id="selected-team-2" class="selected-team-box" data-placeholder="Visitante">Selecciona Visitante</div>
+                </div>
+                <div class="modal-search-wrapper">
+                    <input type="text" id="country-search" placeholder="🔍 Buscar país...">
+                </div>
+                <div class="countries-grid" id="countries-grid">
+                    <!-- Dynamically populated -->
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-cancel-teams" class="btn btn-danger">Cancelar</button>
+                    <button id="btn-confirm-teams" class="btn btn-primary" style="flex: 1;" disabled>Confirmar Partido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+    </script>
+</body>
+</html>
