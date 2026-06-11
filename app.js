@@ -703,8 +703,8 @@ function renderTable() {
                     <select class="status-select" data-id="${step.id}">
                         <option value="pending" ${step.status === 'pending' ? 'selected' : ''}>🟡 Por jugar</option>
                         <option value="in_progress" ${step.status === 'in_progress' ? 'selected' : ''}>🔵 En curso</option>
-                        <option value="won" ${step.status === 'won' ? 'selected' : ''}>🟢 Ganado</option>
-                        <option value="lost" ${step.status === 'lost' ? 'selected' : ''}>🔴 Perdido</option>
+                        <option value="won" ${step.status === 'won' ? 'selected' : ''}>🟢 Ganada</option>
+                        <option value="lost" ${step.status === 'lost' ? 'selected' : ''}>🔴 Perdida</option>
                     </select>
                     <i data-lucide="chevron-down" style="width: 12px; height: 12px; pointer-events: none;"></i>
                 </div>

@@ -1287,16 +1287,16 @@ tr.row-lost .td-input-odds {
     }
     
     .status-pill {
-        width: 100% !important;
+        width: fit-content !important;
         justify-content: space-between !important;
-        padding: 0.5rem 1.25rem !important;
-        min-width: 145px !important;
+        padding: 0.5rem 1rem !important;
+        min-width: 148px !important;
         white-space: nowrap !important;
     }
     
     .status-pill select {
-        width: 100% !important;
-        padding-right: 1.5rem !important;
+        width: 110px !important;
+        padding-right: 0.5rem !important;
         white-space: nowrap !important;
         overflow: visible !important;
     }
