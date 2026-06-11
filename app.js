@@ -208,15 +208,19 @@ const WC_FULL_STEPS = WC_104_MATCHES.map((matchStr) => ({
 const VALID_USERS = ["dario", "julieta", "fausto", "cuervo", "joaquin"];
 let currentUser = "";
 
-// Parse user path
+// Parse user path using hashes (#dario, #fausto, etc.) for client-side routing (works on any host)
 function detectUser() {
-    const path = window.location.pathname.toLowerCase().replace(/^\/|\/$/g, '');
-    if (VALID_USERS.includes(path)) {
-        currentUser = path;
+    const hash = window.location.hash.toLowerCase().replace('#', '');
+    if (VALID_USERS.includes(hash)) {
+        currentUser = hash;
         // Update Title in Header
         const userTitle = currentUser.charAt(0).toUpperCase() + currentUser.slice(1);
         document.querySelector('.header-logo h1').textContent = `El elefante se come en fetas - Dale ${userTitle}`;
         document.title = `El elefante se come en fetas - Dale ${userTitle}`;
+        
+        // Hide user selector overlay if open
+        const overlay = document.getElementById('user-selector-overlay');
+        if (overlay) overlay.remove();
     } else {
         // Show user selection overlay
         showUserSelectionOverlay();
@@ -264,7 +268,7 @@ function showUserSelectionOverlay() {
         });
         btn.addEventListener('click', (e) => {
             const user = e.target.closest('.btn-user-select').dataset.user;
-            window.location.pathname = `/${user}`;
+            window.location.hash = user;
         });
     });
 }
@@ -900,10 +904,18 @@ window.addEventListener('click', (e) => {
 // App Initialization
 async function init() {
     detectUser();
-    await loadState();
-    calculateLadder();
-    renderTable();
-    initMatchAutocomplete();
+    
+    // Listen to hash changes (dynamic user switching)
+    window.addEventListener('hashchange', () => {
+        window.location.reload();
+    });
+
+    if (currentUser) {
+        await loadState();
+        calculateLadder();
+        renderTable();
+        initMatchAutocomplete();
+    }
 }
 
 // Run app
