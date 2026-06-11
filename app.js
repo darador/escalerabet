@@ -265,7 +265,6 @@ const elements = {
     inputDefaultOdds: document.getElementById('input-default-odds'),
     btnAddStep: document.getElementById('btn-add-step'),
     btnReset: document.getElementById('btn-reset'),
-    btnLoadWC: document.getElementById('btn-load-wc'),
     tbody: document.getElementById('steps-tbody'),
     statInitial: document.getElementById('stat-initial'),
     statCurrent: document.getElementById('stat-current'),
@@ -338,8 +337,8 @@ function initDefaultState() {
     state.initialBalance = 10000;
     state.defaultOdds = 1.10;
     
-    // Pre-fill with first 12 matches of the tournament
-    state.steps = WC_FULL_STEPS.slice(0, 12).map((step, i) => ({
+    // Pre-fill with all 104 matches of the tournament by default
+    state.steps = WC_FULL_STEPS.map((step, i) => ({
         id: Date.now() + i,
         ...step
     }));
@@ -806,16 +805,6 @@ elements.btnReset.addEventListener('click', () => {
     }
 });
 
-// Load World Cup Fixtures (all 104 matches)
-elements.btnLoadWC.addEventListener('click', () => {
-    if (confirm('¿Cargar los 104 partidos del Mundial 2026? Esto reemplazará tu listado de partidos actual.')) {
-        state.steps = WC_FULL_STEPS.map((step, i) => ({
-            id: Date.now() + i,
-            ...step
-        }));
-        updateAll();
-    }
-});
 
 // Modal Events
 elements.closeModal.addEventListener('click', closeCountrySelectorModal);

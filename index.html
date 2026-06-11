@@ -58,16 +58,12 @@
                     <span id="stat-roi" class="stat-value">0%</span>
                 </div>
             </div>
-        </section>
-
-        <!-- Main Workspace -->
-        <main class="main-content">
-            <!-- Sidebar Controls -->
-            <aside class="sidebar-controls">
-                <div class="control-card">
-                    <h2>Configuración</h2>
-                    
-                    <div class="form-group">
+        </secti        <!-- Main Workspace -->
+        <main class="main-content single-column">
+            <!-- Top Configuration Bar -->
+            <section class="config-bar-container">
+                <div class="config-bar-card">
+                    <div class="config-field">
                         <label for="input-initial-balance">Monto Inicial ($)</label>
                         <div class="input-with-icon">
                             <span class="input-prefix">$</span>
@@ -75,7 +71,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="config-field">
                         <label for="input-default-odds">Cuota por Defecto</label>
                         <div class="input-with-icon">
                             <span class="input-prefix">x</span>
@@ -83,47 +79,27 @@
                         </div>
                     </div>
 
-                    <button id="btn-add-step" class="btn btn-primary btn-block">
-                        <i data-lucide="plus-circle"></i> Agregar Paso
-                    </button>
-                </div>
-
-                <div class="control-card worldcup-card">
-                    <h3>🏆 Mundial 2026</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
-                        Pre-carga los partidos oficiales o busca uno para agregarlo a tu reto.
-                    </p>
-                    
-                    <div class="form-group" style="position: relative; margin-bottom: 1rem;">
-                        <label for="wc-match-search">Agregar Partido Oficial</label>
+                    <div class="config-field config-search-field" style="position: relative;">
+                        <label for="wc-match-search">Buscar y Agregar Partido Oficial</label>
                         <input type="text" id="wc-match-search" class="input-block" placeholder="🔍 Buscar partido (ej. Argentina)..." style="width: 100%; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-primary); padding: 0.75rem 1rem; font-family: inherit; font-size: 0.9rem; border-style: solid; transition: all var(--transition-fast);">
                         <div id="wc-search-results" class="wc-search-results" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #121420; border: 1px solid var(--border-color); border-radius: var(--radius-sm); max-height: 200px; overflow-y: auto; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
                             <!-- Results populated via JS -->
                         </div>
                     </div>
 
-                    <button id="btn-load-wc" class="btn btn-primary btn-block" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);">
-                        <i data-lucide="trophy"></i> Cargar los 104 Partidos
-                    </button>
+                    <div class="config-buttons">
+                        <button id="btn-add-step" class="btn btn-primary" style="height: 100%; min-height: 46px; align-self: flex-end;">
+                            <i data-lucide="plus-circle"></i> Agregar Paso
+                        </button>
+                    </div>
                 </div>
-
-                <div class="control-card info-card">
-                    <h3>¿Cómo funciona?</h3>
-                    <p>El reto escalera consiste en reinvertir el total ganado en cada paso para el siguiente partido.</p>
-                    <ul>
-                        <li>Define tu <strong>monto inicial</strong>.</li>
-                        <li>Configura la cuota de cada partido.</li>
-                        <li>Marca como <strong>Ganado</strong> para habilitar el siguiente paso.</li>
-                        <li>Si pierdes un paso, la cadena se detendrá en ese punto.</li>
-                    </ul>
-                </div>
-            </aside>
+            </section>
 
             <!-- Table/List of steps -->
             <section class="ladder-container">
                 <div class="section-header">
                     <h2>Mis Pasos Escalera</h2>
-                    <span id="badge-progress" class="badge">Paso 0 / 10</span>
+                    <span id="badge-progress" class="badge">Paso 0 / 104</span>
                 </div>
 
                 <!-- Progress Visual Bar -->
@@ -155,6 +131,17 @@
                 </div>
             </section>
         </main>
+        
+        <!-- How it works footer section -->
+        <section class="how-it-works-footer" aria-label="Instrucciones de uso">
+            <h3>🪜 ¿Cómo funciona el Reto Escalera?</h3>
+            <p>El reto escalera consiste en reinvertir la totalidad del monto conseguido de una apuesta ganada en el siguiente partido seleccionado. Así se logra un crecimiento compuesto del capital inicial.</p>
+            <div class="instruction-steps">
+                <div class="instruction-step"><span>1</span> Configura tu <strong>monto inicial</strong> y tus <strong>cuotas objetivo</strong>.</div>
+                <div class="instruction-step"><span>2</span> Registra las <strong>cuotas reales</strong> de tus apuestas según la cuota final del mercado.</div>
+                <div class="instruction-step"><span>3</span> Cambia el estado a <strong>Ganado</strong> para habilitar y calcular automáticamente el paso siguiente. Si pierdes un paso, la cadena real se interrumpe, pero mantienes tu planificación teórica para comparar.</div>
+            </div>
+        </section>
         
         <footer class="app-footer">
             <p>Reto Escalera &copy; 2026. Diseñado para control y diversión responsable.</p>
