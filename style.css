@@ -48,7 +48,7 @@ body {
     font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: var(--bg-main);
     background-image: 
-        linear-gradient(rgba(10, 11, 16, 0.88), rgba(10, 11, 16, 0.88)),
+        radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.16) 0%, rgba(10, 11, 16, 0.94) 75%),
         url('stadium_background.png');
     background-size: cover;
     background-position: center;
@@ -58,7 +58,7 @@ body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem;
 }
 
 /* App Container */
@@ -148,32 +148,117 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    position: relative;
+    background-image: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
 }
 
-.main-stats-card {
+.stats-main-row {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    text-align: center;
+    gap: 1rem;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.75rem;
 }
 
+.stat-main-box {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.stat-main-box.left-align {
+    align-items: flex-start;
+    text-align: left;
+}
+
+.stat-main-box.right-align {
+    align-items: flex-end;
+    text-align: right;
+}
+
 .main-stat-label {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.main-stat-label svg {
+    width: 14px;
+    height: 14px;
+    color: var(--primary);
 }
 
 .main-stat-value {
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 800;
     background: linear-gradient(135deg, #ffffff 0%, #818cf8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-top: 0.1rem;
+    margin-top: 0.2rem;
+}
+
+.stat-main-box.right-align .main-stat-value {
+    background: linear-gradient(135deg, #ffffff 0%, var(--success) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-vs-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vs-trophy {
+    background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.vs-trophy svg {
+    width: 18px;
+    height: 18px;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(245, 158, 11, 0.3); }
+    50% { transform: scale(1.08); box-shadow: 0 0 20px rgba(245, 158, 11, 0.55); }
+}
+
+.football-progress-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.2rem 0;
+}
+
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.progress-steps-label {
+    color: var(--text-secondary);
+}
+
+.progress-roi-label {
+    color: var(--success);
 }
 
 .stats-chips-row {
@@ -204,6 +289,106 @@ body {
     width: 13px;
     height: 13px;
     color: var(--primary);
+}
+
+/* Football horizontal timeline */
+.football-timeline-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    padding: 0.5rem 0 1.25rem 0;
+    margin-bottom: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+.football-timeline-wrapper::-webkit-scrollbar {
+    height: 4px;
+}
+
+.football-timeline-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.football-timeline {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: max-content;
+    padding: 0.5rem;
+}
+
+.timeline-circle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid var(--border-color);
+    position: relative;
+    transition: all var(--transition-normal);
+}
+
+.timeline-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.timeline-step-label {
+    position: absolute;
+    bottom: -1.25rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+.timeline-connector {
+    width: 30px;
+    height: 3px;
+    background: var(--border-color);
+    border-radius: 2px;
+    transition: all var(--transition-normal);
+}
+
+/* Timeline Circle States */
+.timeline-circle.won {
+    border-color: var(--success);
+    background: rgba(16, 185, 129, 0.08);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+}
+
+.timeline-circle.lost {
+    border-color: var(--danger);
+    background: rgba(239, 68, 68, 0.08);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.25);
+}
+
+.timeline-circle.in-progress {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.08);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
+}
+
+.timeline-circle.active {
+    border-color: var(--warning);
+    background: rgba(245, 158, 11, 0.08);
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+    transform: scale(1.05);
+}
+
+.timeline-connector.active {
+    background: var(--success);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+}
+
+/* Growth Indicator (Desktop Hidden by default) */
+.capital-growth-indicator {
+    display: none;
 }
 
 /* Main content layout */
@@ -681,21 +866,29 @@ body {
     text-transform: uppercase;
 }
 
-/* Status States styling */
 .status-pending {
-    background: var(--warning-bg);
-    border-color: var(--warning-border);
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.25);
     color: var(--warning);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.1);
+}
+.status-in-progress {
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.25);
+    color: #3b82f6;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
 }
 .status-won {
-    background: var(--success-bg);
-    border-color: var(--success-border);
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.25);
     color: var(--success);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
 }
 .status-lost {
-    background: var(--danger-bg);
-    border-color: var(--danger-border);
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.25);
     color: var(--danger);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.1);
 }
 
 /* Special row highlighting based on status */
@@ -942,16 +1135,53 @@ tr.row-lost .td-input-odds {
     /* Column specifically styled as card row/elements */
     .steps-table td.col-step {
         grid-column: span 3;
+        padding: 0 !important;
+        border: none !important;
+    }
+    
+    .col-step-header-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-bottom: 0.4rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .step-label-mobile {
         font-size: 0.72rem;
         font-weight: 800;
         text-transform: uppercase;
         color: var(--primary);
         letter-spacing: 0.05em;
-        margin-bottom: -0.1rem;
+    }
+
+    .step-label-mobile::before {
+        content: "PASO ";
     }
     
-    .steps-table td.col-step::before {
-        content: "PASO ";
+    .capital-growth-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+    
+    .growth-stake {
+        color: var(--text-secondary);
+    }
+    
+    .growth-arrow {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+    }
+    
+    .growth-return {
+        color: var(--success);
+        text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        font-weight: 800;
     }
     
     .steps-table td.col-match {

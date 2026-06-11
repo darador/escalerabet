@@ -552,6 +552,67 @@ function calculateLadder() {
     }
     const progressPercent = totalSteps > 0 ? (wonStepsCount / totalSteps) * 100 : 0;
     elements.progressBarFill.style.width = `${progressPercent}%`;
+
+    // Dynamic Target Payout Calculation
+    if (state.steps.length > 0) {
+        const finalStep = state.steps[state.steps.length - 1];
+        const targetObjEl = document.getElementById('stat-target-objective');
+        if (targetObjEl) {
+            targetObjEl.textContent = formatCurrency(finalStep.returnObj);
+        }
+    }
+}
+
+// Render Football horizontal timeline
+function renderFootballTimeline() {
+    const timelineEl = document.getElementById('football-timeline');
+    if (!timelineEl) return;
+    timelineEl.innerHTML = '';
+    
+    let currentActiveIdx = state.steps.findIndex(s => s.status !== 'won');
+    if (currentActiveIdx === -1) {
+        currentActiveIdx = state.steps.length - 1;
+    }
+    
+    const start = Math.max(0, currentActiveIdx - 2);
+    const end = Math.min(state.steps.length - 1, currentActiveIdx + 5);
+    
+    for (let i = start; i <= end; i++) {
+        const step = state.steps[i];
+        
+        const stepCircle = document.createElement('div');
+        stepCircle.className = 'timeline-circle';
+        
+        let icon = '⚪';
+        if (step.status === 'won') {
+            stepCircle.classList.add('won');
+            icon = '⚽';
+        } else if (step.status === 'lost') {
+            stepCircle.classList.add('lost');
+            icon = '🔴';
+        } else if (step.status === 'in_progress') {
+            stepCircle.classList.add('in-progress');
+            icon = '🔵';
+        } else if (i === currentActiveIdx) {
+            stepCircle.classList.add('active');
+            icon = '🟡';
+        } else {
+            stepCircle.classList.add('pending');
+            icon = '⚪';
+        }
+        
+        stepCircle.innerHTML = `<span class="timeline-icon">${icon}</span><span class="timeline-step-label">Paso ${i + 1}</span>`;
+        timelineEl.appendChild(stepCircle);
+        
+        if (i < end) {
+            const connector = document.createElement('div');
+            connector.className = 'timeline-connector';
+            if (step.status === 'won' && state.steps[i+1].status !== 'pending') {
+                connector.classList.add('active');
+            }
+            timelineEl.appendChild(connector);
+        }
+    }
 }
 
 // Render steps table
@@ -606,9 +667,19 @@ function renderTable() {
         let statusClass = 'status-pending';
         if (step.status === 'won') statusClass = 'status-won';
         if (step.status === 'lost') statusClass = 'status-lost';
+        if (step.status === 'in_progress') statusClass = 'status-in-progress';
 
         tr.innerHTML = `
-            <td class="col-step" style="font-weight: 700;">${index + 1}</td>
+            <td class="col-step" style="font-weight: 700;">
+                <div class="col-step-header-wrapper">
+                    <span class="step-label-mobile">${index + 1}</span>
+                    <div class="capital-growth-indicator">
+                        <span class="growth-stake">${formatCurrency(step.stakeReal)}</span>
+                        <span class="growth-arrow">➔</span>
+                        <span class="growth-return">${formatCurrency(step.returnReal)}</span>
+                    </div>
+                </div>
+            </td>
             <td class="col-match">
                 <div class="match-cell-container">
                     <div style="flex: 1; display: flex; align-items: center; gap: 0.5rem; background: rgba(0, 0, 0, 0.15); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.4rem 0.6rem;">
@@ -630,9 +701,10 @@ function renderTable() {
             <td class="col-status">
                 <div class="status-pill ${statusClass}">
                     <select class="status-select" data-id="${step.id}">
-                        <option value="pending" ${step.status === 'pending' ? 'selected' : ''}>Pendiente</option>
-                        <option value="won" ${step.status === 'won' ? 'selected' : ''}>Ganado</option>
-                        <option value="lost" ${step.status === 'lost' ? 'selected' : ''}>Perdido</option>
+                        <option value="pending" ${step.status === 'pending' ? 'selected' : ''}>🟡 Por jugar</option>
+                        <option value="in_progress" ${step.status === 'in_progress' ? 'selected' : ''}>🔵 En curso</option>
+                        <option value="won" ${step.status === 'won' ? 'selected' : ''}>🟢 Ganado</option>
+                        <option value="lost" ${step.status === 'lost' ? 'selected' : ''}>🔴 Perdido</option>
                     </select>
                     <i data-lucide="chevron-down" style="width: 12px; height: 12px; pointer-events: none;"></i>
                 </div>
@@ -879,6 +951,7 @@ function initMatchAutocomplete() {
 function updateAll() {
     calculateLadder();
     renderTable();
+    renderFootballTimeline();
     saveState();
 }
 
@@ -986,6 +1059,7 @@ async function init() {
         await loadState();
         calculateLadder();
         renderTable();
+        renderFootballTimeline();
         initMatchAutocomplete();
     }
 }

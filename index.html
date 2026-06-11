@@ -33,15 +33,35 @@
 
         <!-- Unified Stats Panel -->
         <section class="stats-container">
-            <div class="main-stats-card">
-                <span class="main-stat-label">Capital Actual</span>
-                <span id="stat-current" class="main-stat-value">$10.000,00</span>
+            <div class="stats-main-row">
+                <div class="stat-main-box left-align">
+                    <span class="main-stat-label"><i data-lucide="wallet"></i> Capital Actual</span>
+                    <span id="stat-current" class="main-stat-value">$10.000,00</span>
+                </div>
+                <div class="stat-vs-divider">
+                    <div class="vs-trophy"><i data-lucide="trophy"></i></div>
+                </div>
+                <div class="stat-main-box right-align">
+                    <span class="main-stat-label"><i data-lucide="target"></i> Objetivo Final</span>
+                    <span id="stat-target-objective" class="main-stat-value">$1.000.000,00</span>
+                </div>
             </div>
+            
+            <!-- Progress visual bar -->
+            <div class="football-progress-wrapper">
+                <div class="progress-bar-container">
+                    <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
+                </div>
+                <div class="progress-labels">
+                    <span id="badge-progress" class="progress-steps-label">Paso 0 / 104</span>
+                    <span id="stat-roi" class="progress-roi-label">ROI: 0%</span>
+                </div>
+            </div>
+
             <div class="stats-chips-row">
-                <div class="stat-chip"><i data-lucide="wallet"></i> Inicial: <strong id="stat-initial">$10.000,00</strong></div>
+                <div class="stat-chip"><i data-lucide="piggy-bank"></i> Inicial: <strong id="stat-initial">$10.000,00</strong></div>
                 <div class="stat-chip"><i data-lucide="coins"></i> Ganancia: <strong id="stat-profit">$0,00</strong></div>
-                <div class="stat-chip"><i data-lucide="percent"></i> ROI: <strong id="stat-roi">0%</strong></div>
-                <div class="stat-chip"><i data-lucide="check-circle-2"></i> Pasos: <strong id="stat-steps-count">0/104</strong></div>
+                <div class="stat-chip"><i data-lucide="activity"></i> Pasos: <strong id="stat-steps-count">0/104</strong></div>
             </div>
         </section>
 
@@ -96,12 +116,13 @@
                         <button id="btn-filter-active" class="btn-filter active">Ver Activos</button>
                         <button id="btn-filter-all" class="btn-filter">Ver Todos</button>
                     </div>
-                    <span id="badge-progress" class="badge">Paso 0 / 104</span>
                 </div>
 
-                <!-- Progress Visual Bar -->
-                <div class="progress-bar-container">
-                    <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
+                <!-- Football Timeline Tracker -->
+                <div class="football-timeline-wrapper">
+                    <div class="football-timeline" id="football-timeline">
+                        <!-- Populated dynamically: circles with ball or check icons -->
+                    </div>
                 </div>
 
                 <!-- Steps Table / Responsive Cards -->
