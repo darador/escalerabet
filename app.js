@@ -183,13 +183,13 @@ function formatMatchDisplayHTML(matchName) {
         const flag1 = getFlagImgHtml(team1);
         const flag2 = getFlagImgHtml(team2);
 
-        return `<div style="display: flex; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;">
+        return `<div class="match-name-container">
             ${prefix}
             ${flag1}
-            <span style="font-weight: 500;">${team1}</span>
-            <span style="color: var(--text-muted); margin: 0 6px; font-weight:600; font-size: 0.85rem;">vs</span>
+            <span class="team-name" style="font-weight: 500;">${team1}</span>
+            <span class="vs-text" style="color: var(--text-muted); margin: 0 6px; font-weight:600; font-size: 0.85rem;">vs</span>
             ${flag2}
-            <span style="font-weight: 500;">${team2}</span>
+            <span class="team-name" style="font-weight: 500;">${team2}</span>
             ${suffix}
         </div>`;
     }

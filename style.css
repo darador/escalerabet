@@ -667,8 +667,28 @@ tr.row-lost .td-input-odds {
     box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
 }
 
+/* Match container styling and mobile-only classes */
+.match-name-container {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+.mobile-only {
+    display: none;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .mobile-only {
+        display: inline !important;
+    }
+    .desktop-only {
+        display: none !important;
+    }
+
     body {
         padding: 1rem 0.5rem;
     }
@@ -694,10 +714,11 @@ tr.row-lost .td-input-odds {
         text-align: center;
     }
     
-    /* Hide Target planning columns on mobile */
+    /* Hide Target planning columns and Action column on mobile */
     .col-odds-obj, 
     .col-stake-obj, 
-    .col-return-obj {
+    .col-return-obj,
+    .col-action {
         display: none !important;
     }
     
@@ -712,25 +733,43 @@ tr.row-lost .td-input-odds {
     
     .steps-table th, 
     .steps-table td {
-        padding: 0.6rem 0.35rem;
-        font-size: 0.82rem;
+        padding: 0.5rem 0.25rem;
+        font-size: 0.8rem;
     }
     
     /* Adjust input widths on mobile */
     .td-input-odds {
-        width: 55px;
-        padding: 0.4rem 0.2rem;
-        font-size: 0.85rem;
+        width: 50px;
+        padding: 0.35rem 0.15rem;
+        font-size: 0.82rem;
     }
     
     /* Adjust flag size and container on mobile */
     .match-cell-container {
-        gap: 0.25rem;
+        gap: 0.15rem;
     }
     
     .match-cell-container div {
-        padding: 0.3rem 0.4rem !important;
-        font-size: 0.8rem !important;
+        padding: 0.25rem 0.35rem !important;
+        font-size: 0.78rem !important;
+    }
+
+    .match-name-container {
+        max-width: 120px;
+    }
+    
+    .match-name-container .team-name {
+        display: inline-block;
+        max-width: 40px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+    
+    .match-name-container .vs-text {
+        margin: 0 2px !important;
+        font-size: 0.72rem;
     }
 }
 
