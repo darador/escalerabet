@@ -205,12 +205,12 @@ const WC_FULL_STEPS = WC_104_MATCHES.map((matchStr) => ({
 }));
 
 // Multi-User Routing Config
-const VALID_USERS = ["dario", "julieta", "fausto", "cuervo", "joaquin"];
+const VALID_USERS = ["dario", "julieta", "fausto", "cuervo", "primazo!"];
 let currentUser = "";
 
 // Parse user path using hashes (#dario, #fausto, etc.) for client-side routing (works on any host)
 function detectUser() {
-    const hash = window.location.hash.toLowerCase().replace('#', '');
+    const hash = decodeURIComponent(window.location.hash.toLowerCase().replace('#', ''));
     if (VALID_USERS.includes(hash)) {
         currentUser = hash;
         // Update Title in Header
