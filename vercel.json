@@ -1,0 +1,6 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/(dario|julieta|fausto|cuervo)", "destination": "/index.html" }
+  ]
+}

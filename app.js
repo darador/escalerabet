@@ -1,58 +1,24 @@
-// World Cup 2026 ISO Codes Mapping (FlagCDN compatible)
+// Supabase Configuration (Optional: Fill these to enable database sync across devices)
+const SUPABASE_URL = ""; 
+const SUPABASE_ANON_KEY = ""; 
+
+// World Cup 2026 ISO Codes Mapping
 const COUNTRY_CODES = {
-    "México": "mx", 
-    "Sudáfrica": "za", 
-    "Corea del Sur": "kr", 
-    "República Checa": "cz",
-    "Canadá": "ca", 
-    "Bosnia y Herzegovina": "ba", 
-    "Bosnia y Her.": "ba",
-    "Estados Unidos": "us", 
-    "EE. UU.": "us",
-    "Paraguay": "py",
-    "Qatar": "qa", 
-    "Suiza": "ch", 
-    "Brasil": "br", 
-    "Marruecos": "ma", 
-    "Haití": "ht",
-    "Escocia": "gb-sct", 
-    "Australia": "au", 
-    "Turquía": "tr", 
-    "Alemania": "de", 
-    "Curazao": "cw",
-    "Países Bajos": "nl", 
-    "Japón": "jp", 
-    "Costa de Marfil": "ci", 
-    "Ecuador": "ec",
-    "Suecia": "se", 
-    "Túnez": "tn", 
-    "España": "es", 
-    "Cabo Verde": "cv", 
-    "Bélgica": "be",
-    "Egipto": "eg", 
-    "Arabia Saudita": "sa", 
-    "Uruguay": "uy", 
-    "Irán": "ir", 
-    "Nueva Zelanda": "nz",
-    "Francia": "fr", 
-    "Senegal": "sn", 
-    "Irak": "iq", 
-    "Noruega": "no", 
-    "Argentina": "ar",
-    "Argelia": "dz", 
-    "Austria": "at", 
-    "Jordania": "jo", 
-    "Portugal": "pt", 
-    "RD de Congo": "cd",
-    "Inglaterra": "gb-eng", 
-    "Croacia": "hr", 
-    "Ghana": "gh", 
-    "Panamá": "pa", 
-    "Uzbekistán": "uz",
+    "México": "mx", "Sudáfrica": "za", "Corea del Sur": "kr", "República Checa": "cz",
+    "Canadá": "ca", "Bosnia y Herzegovina": "ba", "Bosnia y Her.": "ba",
+    "Estados Unidos": "us", "EE. UU.": "us", "Paraguay": "py",
+    "Qatar": "qa", "Suiza": "ch", "Brasil": "br", "Marruecos": "ma", "Haití": "ht",
+    "Escocia": "gb-sct", "Australia": "au", "Turquía": "tr", "Alemania": "de", "Curazao": "cw",
+    "Países Bajos": "nl", "Japón": "jp", "Costa de Marfil": "ci", "Ecuador": "ec",
+    "Suecia": "se", "Túnez": "tn", "España": "es", "Cabo Verde": "cv", "Bélgica": "be",
+    "Egipto": "eg", "Arabia Saudita": "sa", "Uruguay": "uy", "Irán": "ir", "Nueva Zelanda": "nz",
+    "Francia": "fr", "Senegal": "sn", "Irak": "iq", "Noruega": "no", "Argentina": "ar",
+    "Argelia": "dz", "Austria": "at", "Jordania": "jo", "Portugal": "pt", "RD de Congo": "cd",
+    "Inglaterra": "gb-eng", "Croacia": "hr", "Ghana": "gh", "Panamá": "pa", "Uzbekistán": "uz",
     "Colombia": "co"
 };
 
-// Full list of 104 Matches of the World Cup 2026 (Clean names, no inline emojis)
+// Full list of 104 Matches of the World Cup 2026
 const WC_104_MATCHES = [
     "México vs. Sudáfrica (Grupo A)",
     "Corea del Sur vs. República Checa (Grupo A)",
@@ -170,26 +136,21 @@ function getFlagImgHtml(countryName) {
     return "";
 }
 
-// Cleans match strings that might contain legacy text codes or flags
+// Cleans legacy data strings
 function sanitizeMatchString(str) {
-    // Strip ISO codes that might have been loaded (e.g. "MX ", "ZA ")
     let clean = str;
     Object.keys(COUNTRY_CODES).forEach(name => {
-        const flagEmoji = COUNTRY_CODES[name];
-        // Match things like "MX México", "ZA Sudáfrica", etc.
         const codePrefix = new RegExp(`^[A-Z]{2}\\s+(${name})`, 'g');
         clean = clean.replace(codePrefix, '$1');
-        
         const codeMid = new RegExp(`vs\\.?\\s+[A-Z]{2}\\s+(${name})`, 'g');
         clean = clean.replace(codeMid, 'vs. $1');
     });
     return clean;
 }
 
-// Generate match display HTML with images instead of text emojis
+// Generate match display HTML with images
 function formatMatchDisplayHTML(matchName) {
     const sanitized = sanitizeMatchString(matchName);
-    
     let delimiter = " vs. ";
     if (sanitized.includes(" vs ")) delimiter = " vs ";
     else if (sanitized.includes(" v. ")) delimiter = " v. ";
@@ -200,13 +161,11 @@ function formatMatchDisplayHTML(matchName) {
         let team1 = parts[0].trim();
         let team2 = parts[1].trim();
 
-        // Check if team1 has prefix (like "16avos de Final: P73 - ")
         let prefix = "";
         if (team1.includes(":")) {
             const idx = team1.indexOf(":");
             prefix = `<span style="color: var(--text-muted); font-size: 0.8rem; font-weight:500;">${team1.slice(0, idx + 1)} </span>`;
             team1 = team1.slice(idx + 1).trim();
-            // Handle phase details (P73 - )
             if (team1.includes("-")) {
                 const hyphenIdx = team1.indexOf("-");
                 prefix += `<span style="color: var(--primary); font-size: 0.8rem; font-weight:600;">${team1.slice(0, hyphenIdx + 1)} </span>`;
@@ -214,7 +173,6 @@ function formatMatchDisplayHTML(matchName) {
             }
         }
 
-        // Check if team2 has suffix (like "(Grupo A)")
         let suffix = "";
         const groupMatch = team2.match(/\((Grupo [A-L])\)/i);
         if (groupMatch) {
@@ -222,7 +180,6 @@ function formatMatchDisplayHTML(matchName) {
             team2 = team2.replace(/\((Grupo [A-L])\)/i, "").trim();
         }
 
-        // Generate flag images
         const flag1 = getFlagImgHtml(team1);
         const flag2 = getFlagImgHtml(team2);
 
@@ -246,6 +203,71 @@ const WC_FULL_STEPS = WC_104_MATCHES.map((matchStr) => ({
     oddsReal: 1.10,
     status: 'pending'
 }));
+
+// Multi-User Routing Config
+const VALID_USERS = ["dario", "julieta", "fausto", "cuervo"];
+let currentUser = "";
+
+// Parse user path
+function detectUser() {
+    const path = window.location.pathname.toLowerCase().replace(/^\/|\/$/g, '');
+    if (VALID_USERS.includes(path)) {
+        currentUser = path;
+        // Update Title in Header
+        const userTitle = currentUser.charAt(0).toUpperCase() + currentUser.slice(1);
+        document.querySelector('.header-logo h1').textContent = `Reto Escalera - ${userTitle}`;
+        document.title = `Reto Escalera - ${userTitle}`;
+    } else {
+        // Show user selection overlay
+        showUserSelectionOverlay();
+    }
+}
+
+function showUserSelectionOverlay() {
+    // Check if selector overlay already exists
+    if (document.getElementById('user-selector-overlay')) return;
+
+    const div = document.createElement('div');
+    div.id = 'user-selector-overlay';
+    div.style.cssText = `
+        position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%;
+        background-color: rgba(10, 11, 16, 0.95); backdrop-filter: blur(15px);
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        color: var(--text-primary); text-align: center; padding: 2rem;
+    `;
+    
+    div.innerHTML = `
+        <h1 style="font-size: 2.2rem; font-weight:800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🪜 Reto Escalera</h1>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size:1.1rem;">Selecciona tu usuario para acceder a tu planilla:</p>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; width: 100%; max-width: 440px;">
+            ${VALID_USERS.map(u => `
+                <button class="btn btn-primary btn-user-select" data-user="${u}" style="font-size:1.1rem; padding: 1rem; text-transform: capitalize; border-radius: var(--radius-md); background: rgba(99, 102, 241, 0.15); border: 1px solid var(--border-color); color: var(--text-primary); transition:all 0.2s;">
+                    👤 ${u}
+                </button>
+            `).join('')}
+        </div>
+    `;
+
+    document.body.appendChild(div);
+
+    // Style button hover manually or bind events
+    div.querySelectorAll('.btn-user-select').forEach(btn => {
+        btn.addEventListener('mouseover', (e) => {
+            e.target.style.background = 'var(--primary)';
+            e.target.style.borderColor = 'var(--primary)';
+            e.target.style.boxShadow = '0 0 15px rgba(99, 102, 241, 0.4)';
+        });
+        btn.addEventListener('mouseout', (e) => {
+            e.target.style.background = 'rgba(99, 102, 241, 0.15)';
+            e.target.style.borderColor = 'var(--border-color)';
+            e.target.style.boxShadow = 'none';
+        });
+        btn.addEventListener('click', (e) => {
+            const user = e.target.closest('.btn-user-select').dataset.user;
+            window.location.pathname = `/${user}`;
+        });
+    });
+}
 
 // Application State
 let state = {
@@ -303,30 +325,67 @@ function formatPercent(value) {
     return `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`;
 }
 
-// Load State from LocalStorage
-function loadState() {
-    const savedState = localStorage.getItem('reto_escalera_state');
-    if (savedState) {
+// Load State from LocalStorage or Supabase
+async function loadState() {
+    if (!currentUser) return;
+    
+    let loadedState = null;
+
+    // 1. Try Loading from Supabase if configured
+    if (SUPABASE_URL && SUPABASE_ANON_KEY) {
         try {
-            state = JSON.parse(savedState);
-            
-            // Clean legacy data
-            state.steps = state.steps.map(step => {
-                if (step.odds !== undefined && step.oddsObj === undefined) {
-                    step.oddsObj = step.odds;
-                    step.oddsReal = step.odds;
-                    delete step.odds;
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/ladders?username=eq.${currentUser}`, {
+                method: 'GET',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json'
                 }
-                step.match = sanitizeMatchString(step.match);
-                return step;
             });
-            
-            elements.inputInitialBalance.value = state.initialBalance;
-            elements.inputDefaultOdds.value = state.defaultOdds;
+            if (res.ok) {
+                const data = await res.json();
+                if (data && data.length > 0) {
+                    loadedState = {
+                        initialBalance: data[0].initial_balance,
+                        defaultOdds: data[0].default_odds,
+                        steps: data[0].steps
+                    };
+                }
+            }
         } catch (e) {
-            console.error('Error loading saved state, using defaults.', e);
-            initDefaultState();
+            console.error('Failed to load from Supabase, falling back to LocalStorage', e);
         }
+    }
+
+    // 2. LocalStorage fallback
+    if (!loadedState) {
+        const savedState = localStorage.getItem(`reto_escalera_${currentUser}`);
+        if (savedState) {
+            try {
+                loadedState = JSON.parse(savedState);
+            } catch (e) {
+                console.error('Error parsing localStorage state', e);
+            }
+        }
+    }
+
+    // 3. Populate state
+    if (loadedState) {
+        state = loadedState;
+        
+        // Clean legacy fields
+        state.steps = state.steps.map(step => {
+            if (step.odds !== undefined && step.oddsObj === undefined) {
+                step.oddsObj = step.odds;
+                step.oddsReal = step.odds;
+                delete step.odds;
+            }
+            step.match = sanitizeMatchString(step.match);
+            return step;
+        });
+
+        elements.inputInitialBalance.value = state.initialBalance;
+        elements.inputDefaultOdds.value = state.defaultOdds;
     } else {
         initDefaultState();
     }
@@ -337,7 +396,7 @@ function initDefaultState() {
     state.initialBalance = 10000;
     state.defaultOdds = 1.10;
     
-    // Pre-fill with all 104 matches of the tournament by default
+    // Pre-fill with all 104 matches of the tournament
     state.steps = WC_FULL_STEPS.map((step, i) => ({
         id: Date.now() + i,
         ...step
@@ -347,9 +406,39 @@ function initDefaultState() {
     elements.inputDefaultOdds.value = state.defaultOdds;
 }
 
-// Save State to LocalStorage
-function saveState() {
-    localStorage.setItem('reto_escalera_state', JSON.stringify(state));
+// Save State to LocalStorage and Supabase
+async function saveState() {
+    if (!currentUser) return;
+
+    // 1. Save locally first
+    localStorage.setItem(`reto_escalera_${currentUser}`, JSON.stringify(state));
+
+    // 2. Sync with Supabase if configured
+    if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+        try {
+            // Upsert syntax via REST: using a single POST with Prefer: resolution=merge-duplicates or checking if exists
+            const payload = {
+                username: currentUser,
+                initial_balance: state.initialBalance,
+                default_odds: state.defaultOdds,
+                steps: state.steps,
+                updated_at: new Date().toISOString()
+            };
+            
+            await fetch(`${SUPABASE_URL}/rest/v1/ladders`, {
+                method: 'POST',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'resolution=merge-duplicates'
+                },
+                body: JSON.stringify(payload)
+            });
+        } catch (e) {
+            console.error('Failed to sync to Supabase', e);
+        }
+    }
 }
 
 // Calculate the ladder values
@@ -380,7 +469,6 @@ function calculateLadder() {
                 step.stakeReal = 0;
                 chainBroken = true;
             } else {
-                // Previous is pending. Show projected actual stake for planning
                 step.stakeReal = prevStep.returnReal;
             }
         }
@@ -411,7 +499,6 @@ function calculateLadder() {
     const profit = currentBalance - state.initialBalance;
     elements.statProfit.textContent = formatCurrency(profit);
     
-    // Profit CSS indicator
     if (profit > 0) {
         elements.statProfit.style.color = 'var(--success)';
     } else if (profit < 0) {
@@ -440,13 +527,11 @@ function calculateLadder() {
 // Render steps table
 function renderTable() {
     elements.tbody.innerHTML = '';
-    
     let chainBroken = false;
 
     state.steps.forEach((step, index) => {
         const tr = document.createElement('tr');
         
-        // Add row classes based on status and chain status
         if (step.status === 'won') {
             tr.className = 'row-won';
         } else if (step.status === 'lost') {
@@ -457,7 +542,6 @@ function renderTable() {
             tr.style.opacity = '0.4';
         }
 
-        // Check if stake is a projection
         let isProjected = false;
         if (index > 0) {
             const prevStep = state.steps[index - 1];
@@ -474,12 +558,10 @@ function renderTable() {
             ? `<span style="color: var(--text-muted); font-style: italic;" title="Proyectado">${formatCurrency(step.returnReal)}*</span>`
             : formatCurrency(step.returnReal);
 
-        // Status pill styling class
         let statusClass = 'status-pending';
         if (step.status === 'won') statusClass = 'status-won';
         if (step.status === 'lost') statusClass = 'status-lost';
 
-        // Render input element with formatted HTML inside matching wrapper
         tr.innerHTML = `
             <td class="col-step" style="font-weight: 700;">${index + 1}</td>
             <td class="col-match">
@@ -520,14 +602,12 @@ function renderTable() {
         elements.tbody.appendChild(tr);
     });
 
-    // Re-bind Lucide Icons
     lucide.createIcons();
     bindDynamicEvents();
 }
 
 // Bind events to dynamically created table rows
 function bindDynamicEvents() {
-    // Match Country selector button
     document.querySelectorAll('.btn-select-teams').forEach(button => {
         button.addEventListener('click', (e) => {
             const id = parseInt(e.currentTarget.dataset.id);
@@ -535,7 +615,6 @@ function bindDynamicEvents() {
         });
     });
 
-    // Odds Target (Objetivo) Input Change
     document.querySelectorAll('.td-input-odds-obj').forEach(input => {
         input.addEventListener('change', (e) => {
             const id = parseInt(e.target.dataset.id);
@@ -556,7 +635,6 @@ function bindDynamicEvents() {
         });
     });
 
-    // Odds Actual (Real) Input Change
     document.querySelectorAll('.td-input-odds-real').forEach(input => {
         input.addEventListener('change', (e) => {
             const id = parseInt(e.target.dataset.id);
@@ -571,7 +649,6 @@ function bindDynamicEvents() {
         });
     });
 
-    // Status Select Change
     document.querySelectorAll('.status-select').forEach(select => {
         select.addEventListener('change', (e) => {
             const id = parseInt(e.target.dataset.id);
@@ -583,7 +660,6 @@ function bindDynamicEvents() {
         });
     });
 
-    // Delete Row Button Click
     document.querySelectorAll('.btn-delete-row').forEach(button => {
         button.addEventListener('click', (e) => {
             const btn = e.target.closest('.btn-delete-row');
@@ -600,7 +676,6 @@ function openCountrySelectorModal(rowId) {
     selectedLocalTeam = null;
     selectedVisitorTeam = null;
     
-    // Reset selections in display boxes
     elements.selectedTeam1.textContent = elements.selectedTeam1.dataset.placeholder;
     elements.selectedTeam1.classList.remove('active');
     elements.selectedTeam2.textContent = elements.selectedTeam2.dataset.placeholder;
@@ -609,7 +684,6 @@ function openCountrySelectorModal(rowId) {
     elements.btnConfirmTeams.disabled = true;
     elements.countrySearch.value = '';
     
-    // Pre-populate display boxes if match currently contains "vs"
     const step = state.steps.find(s => s.id === rowId);
     if (step) {
         const sanitized = sanitizeMatchString(step.match);
@@ -639,7 +713,6 @@ function closeCountrySelectorModal() {
 function renderCountriesGrid(searchQuery = '') {
     elements.countriesGrid.innerHTML = '';
     
-    // Assemble list from mapping
     const list = Object.keys(COUNTRY_CODES).map(name => ({
         name: name,
         code: COUNTRY_CODES[name]
@@ -656,7 +729,6 @@ function renderCountriesGrid(searchQuery = '') {
         div.style.alignItems = 'center';
         div.style.padding = '0.5rem';
         
-        // Add selected indicator if already chosen
         const isSelected = 
             (selectedLocalTeam && selectedLocalTeam.name === country.name) ||
             (selectedVisitorTeam && selectedVisitorTeam.name === country.name);
@@ -731,12 +803,10 @@ function initMatchAutocomplete() {
         
         elements.wcSearchResults.style.display = 'block';
 
-        // Bind clicks to search results
         elements.wcSearchResults.querySelectorAll('.wc-search-item').forEach((item, idx) => {
             item.addEventListener('click', () => {
                 const originalMatchName = filtered[idx];
                 
-                // Add new step
                 state.steps.push({
                     id: Date.now(),
                     match: originalMatchName,
@@ -747,14 +817,12 @@ function initMatchAutocomplete() {
                 
                 updateAll();
                 
-                // Clear input
                 elements.wcMatchSearch.value = '';
                 elements.wcSearchResults.style.display = 'none';
             });
         });
     });
 
-    // Close results dropdown when clicking outside
     document.addEventListener('click', (e) => {
         if (e.target !== elements.wcMatchSearch && e.target !== elements.wcSearchResults) {
             elements.wcSearchResults.style.display = 'none';
@@ -762,7 +830,7 @@ function initMatchAutocomplete() {
     });
 }
 
-// Perform full recalculation, save and re-render
+// Recalculate, save and render
 function updateAll() {
     calculateLadder();
     renderTable();
@@ -805,7 +873,6 @@ elements.btnReset.addEventListener('click', () => {
     }
 });
 
-
 // Modal Events
 elements.closeModal.addEventListener('click', closeCountrySelectorModal);
 elements.btnCancelTeams.addEventListener('click', closeCountrySelectorModal);
@@ -824,7 +891,6 @@ elements.btnConfirmTeams.addEventListener('click', () => {
     }
 });
 
-// Close modal when clicking outside
 window.addEventListener('click', (e) => {
     if (e.target === elements.countryModal) {
         closeCountrySelectorModal();
@@ -832,9 +898,11 @@ window.addEventListener('click', (e) => {
 });
 
 // App Initialization
-function init() {
-    loadState();
-    updateAll();
+async function init() {
+    detectUser();
+    await loadState();
+    calculateLadder();
+    renderTable();
     initMatchAutocomplete();
 }
 
