@@ -1107,7 +1107,11 @@ tr.row-lost .td-input-odds {
     }
 
     /* Transform table into vertical cards */
-    .steps-table, 
+    .steps-table {
+        display: block;
+        width: 100% !important;
+        min-width: 0 !important;
+    }
     .steps-table thead, 
     .steps-table tbody, 
     .steps-table tr, 
