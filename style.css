@@ -1134,7 +1134,7 @@ tr.row-lost .td-input-odds {
         padding: 0.85rem 1rem !important;
         margin-bottom: 0.75rem !important;
         display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 0.6rem !important;
         transition: transform var(--transition-fast);
         opacity: 1 !important; /* Overwrite standard opacity */
@@ -1152,7 +1152,7 @@ tr.row-lost .td-input-odds {
     
     /* Column specifically styled as card row/elements */
     .steps-table td.col-step {
-        grid-column: span 3;
+        grid-column: span 2 !important;
         padding: 0 !important;
         border: none !important;
     }
@@ -1183,7 +1183,7 @@ tr.row-lost .td-input-odds {
         display: flex;
         align-items: center;
         gap: 0.35rem;
-        font-size: 0.85rem;
+        font-size: 0.95rem;
         font-weight: 700;
     }
     
@@ -1203,7 +1203,7 @@ tr.row-lost .td-input-odds {
     }
     
     .steps-table td.col-match {
-        grid-column: span 3;
+        grid-column: span 2 !important;
         margin-bottom: 0.2rem;
     }
 
@@ -1211,16 +1211,26 @@ tr.row-lost .td-input-odds {
         width: 100% !important;
     }
 
+    .match-box-wrapper {
+        flex-wrap: wrap !important;
+        padding: 0.35rem 0.5rem !important;
+        align-items: center !important;
+    }
+
     .match-name-container {
-        max-width: 100% !important; /* Allow it to span fully in card */
+        max-width: 100% !important;
+        white-space: normal !important;
+        flex-wrap: wrap !important;
+        gap: 0.25rem !important;
+        font-size: 0.82rem !important;
     }
     
     .match-name-container .team-name {
-        display: inline-block !important;
-        max-width: 100px !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        white-space: nowrap !important;
+        display: inline !important;
+        max-width: none !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
         vertical-align: middle !important;
     }
     
@@ -1229,11 +1239,10 @@ tr.row-lost .td-input-odds {
         font-size: 0.75rem !important;
     }
     
-    /* Real metrics styled as 3 columns */
+    /* Real metrics styled as 2 columns */
     .steps-table td.col-odds-real,
-    .steps-table td.col-stake-real,
-    .steps-table td.col-return-real {
-        grid-column: span 1;
+    .steps-table td.col-stake-real {
+        grid-column: span 1 !important;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -1263,24 +1272,14 @@ tr.row-lost .td-input-odds {
         margin-bottom: 0.2rem;
         font-weight: 600;
     }
-    
-    .steps-table td.col-return-real::before {
-        content: "Retorno";
-        font-size: 0.65rem;
-        color: var(--text-secondary);
-        text-transform: uppercase;
-        margin-bottom: 0.2rem;
-        font-weight: 600;
-    }
 
-    .steps-table td.col-stake-real,
-    .steps-table td.col-return-real {
+    .steps-table td.col-stake-real {
         font-weight: 700;
         font-size: 0.85rem;
     }
     
     .steps-table td.col-status {
-        grid-column: span 3;
+        grid-column: span 2 !important;
         display: flex;
         justify-content: flex-start;
         margin-top: 0.2rem;
@@ -1301,18 +1300,28 @@ tr.row-lost .td-input-odds {
         overflow: visible !important;
     }
 
-    /* Hide Action and Object planning columns */
-    .col-odds-obj, .col-stake-obj, .col-return-obj, .col-action {
+    /* Hide Action, Object planning columns, and Retorno column since it is shown on Fila 1 */
+    .col-odds-obj, .col-stake-obj, .col-return-obj, .col-action, .col-return-real {
         display: none !important;
     }
 }
 
-/* Match Cell with Button Wrapper */
 .match-cell-container {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     width: 100%;
+}
+
+.match-box-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.4rem 0.6rem;
 }
 
 .btn-select-teams {

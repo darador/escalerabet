@@ -682,7 +682,7 @@ function renderTable() {
             </td>
             <td class="col-match">
                 <div class="match-cell-container">
-                    <div style="flex: 1; display: flex; align-items: center; gap: 0.5rem; background: rgba(0, 0, 0, 0.15); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.4rem 0.6rem;">
+                    <div class="match-box-wrapper">
                         ${formatMatchDisplayHTML(step.match)}
                     </div>
                     <button class="btn-select-teams" data-id="${step.id}" title="Seleccionar equipos del Mundial 2026">⚽</button>
