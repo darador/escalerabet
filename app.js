@@ -779,10 +779,12 @@ function bindDynamicEvents() {
             if (step) {
                 const oldStatus = step.status;
                 const newStatus = e.target.value;
+                console.log(`[DEBUG] Cambiando estado de paso ${step.id}: ${oldStatus} -> ${newStatus}`);
                 step.status = newStatus;
                 updateAll();
                 
                 if (newStatus === 'won' && oldStatus !== 'won') {
+                    console.log(`[DEBUG] Transición a GANADA detectada. Mostrando modal...`);
                     showMotivationalPopup();
                 }
             }
@@ -1104,7 +1106,11 @@ const PREMIUM_PHRASES = [
 let celebrationAutoCloseTimeout = null;
 
 function showMotivationalPopup() {
-    if (!elements.celebrationModal) return;
+    console.log(`[DEBUG] showMotivationalPopup llamada. Elements celebrationModal:`, elements.celebrationModal);
+    if (!elements.celebrationModal) {
+        console.warn(`[DEBUG] No se encontró elements.celebrationModal en el DOM!`);
+        return;
+    }
     
     // Select phrase (5-10% probability of premium phrase, let's use 8%)
     let phrase = "";
