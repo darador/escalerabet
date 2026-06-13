@@ -1123,6 +1123,8 @@ tr.row-lost .td-input-odds {
     .steps-wrapper {
         border: none !important;
         background: transparent !important;
+        overflow-x: hidden !important;
+        width: 100% !important;
     }
     
     .steps-table tbody tr {
@@ -1138,6 +1140,8 @@ tr.row-lost .td-input-odds {
         gap: 0.6rem !important;
         transition: transform var(--transition-fast);
         opacity: 1 !important; /* Overwrite standard opacity */
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     tr.row-broken {
@@ -1148,6 +1152,10 @@ tr.row-lost .td-input-odds {
         padding: 0 !important;
         border: none !important;
         background: transparent !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        box-sizing: border-box !important;
     }
     
     /* Column specifically styled as card row/elements */
