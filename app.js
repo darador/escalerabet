@@ -331,7 +331,13 @@ const elements = {
     selectedTeam1: document.getElementById('selected-team-1'),
     selectedTeam2: document.getElementById('selected-team-2'),
     countrySearch: document.getElementById('country-search'),
-    countriesGrid: document.getElementById('countries-grid')
+    countriesGrid: document.getElementById('countries-grid'),
+    
+    // Celebration Modal DOM
+    celebrationModal: document.getElementById('celebration-modal'),
+    celebrationQuote: document.getElementById('celebration-quote'),
+    btnCloseCelebration: document.getElementById('btn-close-celebration'),
+    celebrationParticles: document.getElementById('celebration-particles')
 };
 
 // Format currency
@@ -771,8 +777,14 @@ function bindDynamicEvents() {
             const id = parseInt(e.target.dataset.id);
             const step = state.steps.find(s => s.id === id);
             if (step) {
-                step.status = e.target.value;
+                const oldStatus = step.status;
+                const newStatus = e.target.value;
+                step.status = newStatus;
                 updateAll();
+                
+                if (newStatus === 'won' && oldStatus !== 'won') {
+                    showMotivationalPopup();
+                }
             }
         });
     });
@@ -1044,7 +1056,135 @@ window.addEventListener('click', (e) => {
     if (e.target === elements.countryModal) {
         closeCountrySelectorModal();
     }
+    if (e.target === elements.celebrationModal) {
+        closeCelebrationModal();
+    }
 });
+
+if (elements.btnCloseCelebration) {
+    elements.btnCloseCelebration.addEventListener('click', closeCelebrationModal);
+}
+
+// --- Motivational & Celebration Modal System ---
+const MOTIVATIONAL_PHRASES = [
+    "El elefante se come en fetas.",
+    "Paso a paso se construyen los grandes logros.",
+    "La paciencia es la reina de las virtudes.",
+    "Hoy no ganaste una apuesta, avanzaste un escalón.",
+    "Los resultados llegan para quien respeta el proceso.",
+    "Un paso más cerca del objetivo.",
+    "La disciplina vence a la suerte.",
+    "No mires la cima, mira el próximo escalón.",
+    "Las grandes metas se conquistan de a poco.",
+    "Mantén el plan. Mantén el rumbo.",
+    "La consistencia siempre paga.",
+    "Cada acierto fortalece la escalera.",
+    "Ganar una vez es suerte. Repetirlo es método.",
+    "El progreso compuesto hace milagros.",
+    "Lo importante no es correr, es avanzar.",
+    "Una decisión correcta a la vez.",
+    "La diferencia está en no abandonar.",
+    "La victoria pertenece a quien persevera.",
+    "Cada paso cuenta.",
+    "Sigue construyendo.",
+    "El próximo escalón te espera.",
+    "Vas por buen camino.",
+    "El esfuerzo acumulado da frutos.",
+    "Hoy sembraste confianza.",
+    "Mantén la cabeza fría y sigue avanzando."
+];
+
+const PREMIUM_PHRASES = [
+    "🏆 Modo leyenda activado.",
+    "🏆 Los que llegan lejos son los que no se detienen.",
+    "🏆 El millón no se construye de golpe.",
+    "🏆 Estás demostrando que el método funciona."
+];
+
+let celebrationAutoCloseTimeout = null;
+
+function showMotivationalPopup() {
+    if (!elements.celebrationModal) return;
+    
+    // Select phrase (5-10% probability of premium phrase, let's use 8%)
+    let phrase = "";
+    if (Math.random() < 0.08) {
+        const idx = Math.floor(Math.random() * PREMIUM_PHRASES.length);
+        phrase = PREMIUM_PHRASES[idx];
+    } else {
+        const idx = Math.floor(Math.random() * MOTIVATIONAL_PHRASES.length);
+        phrase = MOTIVATIONAL_PHRASES[idx];
+    }
+    
+    elements.celebrationQuote.textContent = phrase;
+    elements.celebrationModal.classList.add('active');
+    
+    // Create confetti / brilliant particles explosion animation
+    createCelebrationParticles();
+    
+    // Clear any previous timeout
+    if (celebrationAutoCloseTimeout) {
+        clearTimeout(celebrationAutoCloseTimeout);
+    }
+    
+    // Auto-close after 4 seconds (allows reading long sentences comfortably)
+    celebrationAutoCloseTimeout = setTimeout(() => {
+        closeCelebrationModal();
+    }, 4000);
+}
+
+function closeCelebrationModal() {
+    if (elements.celebrationModal) {
+        elements.celebrationModal.classList.remove('active');
+    }
+    if (celebrationAutoCloseTimeout) {
+        clearTimeout(celebrationAutoCloseTimeout);
+        celebrationAutoCloseTimeout = null;
+    }
+}
+
+function createCelebrationParticles() {
+    if (!elements.celebrationParticles) return;
+    elements.celebrationParticles.innerHTML = '';
+    
+    const colors = ['#10b981', '#6366f1', '#f59e0b', '#3b82f6', '#ec4899', '#f43f5e', '#ffffff'];
+    const particleCount = 35;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random size (6px to 14px)
+        const size = Math.random() * 8 + 6;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random background color from theme-friendly palette
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.background = color;
+        
+        // Initial position at center of modal content
+        particle.style.left = '50%';
+        particle.style.top = '50%';
+        particle.style.transform = 'translate(-50%, -50%)';
+        
+        // Random displacement (polar coordinates converted to Cartesian X and Y)
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 160 + 50; // 50px to 210px
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        const rotation = Math.random() * 360 + 90;
+        
+        particle.style.setProperty('--tx', `${tx}px`);
+        particle.style.setProperty('--ty', `${ty}px`);
+        particle.style.setProperty('--rot', `${rotation}deg`);
+        
+        // Random animation delay for naturally staggered explosion
+        particle.style.animationDelay = `${Math.random() * 0.15}s`;
+        
+        elements.celebrationParticles.appendChild(particle);
+    }
+}
 
 // App Initialization
 async function init() {
