@@ -1123,7 +1123,29 @@ function showMotivationalPopup() {
     }
     
     elements.celebrationQuote.textContent = phrase;
-    elements.celebrationModal.classList.add('active');
+    
+    // Force inline styles on wrapper to ensure visibility regardless of CSS issues
+    elements.celebrationModal.style.setProperty('display', 'flex', 'important');
+    elements.celebrationModal.style.position = 'fixed';
+    elements.celebrationModal.style.zIndex = '999999';
+    elements.celebrationModal.style.left = '0';
+    elements.celebrationModal.style.top = '0';
+    elements.celebrationModal.style.width = '100%';
+    elements.celebrationModal.style.height = '100%';
+    elements.celebrationModal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    elements.celebrationModal.style.backdropFilter = 'blur(8px)';
+    elements.celebrationModal.style.webkitBackdropFilter = 'blur(8px)';
+    elements.celebrationModal.style.alignItems = 'center';
+    elements.celebrationModal.style.justifyContent = 'center';
+    
+    // Force inline styles on inner content
+    const content = elements.celebrationModal.querySelector('.celebration-modal-content');
+    if (content) {
+        content.getBoundingClientRect(); // Trigger layout reflow
+        content.style.opacity = '1';
+        content.style.transform = 'scale(1)';
+        content.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease';
+    }
     
     // Create confetti / brilliant particles explosion animation
     createCelebrationParticles();
@@ -1141,7 +1163,12 @@ function showMotivationalPopup() {
 
 function closeCelebrationModal() {
     if (elements.celebrationModal) {
-        elements.celebrationModal.classList.remove('active');
+        elements.celebrationModal.style.display = 'none';
+        const content = elements.celebrationModal.querySelector('.celebration-modal-content');
+        if (content) {
+            content.style.opacity = '0';
+            content.style.transform = 'scale(0.9)';
+        }
     }
     if (celebrationAutoCloseTimeout) {
         clearTimeout(celebrationAutoCloseTimeout);
