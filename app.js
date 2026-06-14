@@ -1055,16 +1055,22 @@ elements.btnConfirmTeams.addEventListener('click', () => {
 });
 
 window.addEventListener('click', (e) => {
+    console.log('[DEBUG] Window click detected. Target:', e.target);
     if (e.target === elements.countryModal) {
+        console.log('[DEBUG] Click en countryModal. Cerrando country modal...');
         closeCountrySelectorModal();
     }
     if (e.target === elements.celebrationModal) {
+        console.log('[DEBUG] Click en celebrationModal overlay. Cerrando celebration modal...');
         closeCelebrationModal();
     }
 });
 
 if (elements.btnCloseCelebration) {
-    elements.btnCloseCelebration.addEventListener('click', closeCelebrationModal);
+    elements.btnCloseCelebration.addEventListener('click', (e) => {
+        console.log('[DEBUG] Click en btnCloseCelebration. Cerrando celebration modal...');
+        closeCelebrationModal();
+    });
 }
 
 // --- Motivational & Celebration Modal System ---
@@ -1162,6 +1168,7 @@ function showMotivationalPopup() {
 }
 
 function closeCelebrationModal() {
+    console.log(`[DEBUG] closeCelebrationModal ejecutada!`);
     if (elements.celebrationModal) {
         elements.celebrationModal.style.display = 'none';
         const content = elements.celebrationModal.querySelector('.celebration-modal-content');
